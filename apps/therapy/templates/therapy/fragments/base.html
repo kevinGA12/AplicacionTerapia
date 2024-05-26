@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <!--Import Google Icon Font-->
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <style>
+        .errorlist {
+            color: #F44336 !important;
+        }
+    </style>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <style>
+
+        .brand-logo {
+            font-family: 'Roboto Mono', monospace;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+<nav class="grey darken-2 lighten-1" role="navigation">
+    <div class="nav-wrapper container">
+
+        <a id="logo-container" href="{% url 'therapy:home' %}" class="brand-logo deep-orange-text">NeuroHelp</a>
+        {% if request.user.is_authenticated %}
+            
+        {% endif %}
+        {% if request.user.is_authenticated %}
+            <ul class="right hide-on-med-and-down">
+                <li><a href="{% url 'therapy:therapy-request' %}">Sesion-Online</a></li>
+                <li><a href="{% url 'therapy:therapy-resources' %}">Recursos</a></li>
+                <li><a href="{% url 'therapy:therapy-forums' %}">Comunidad</a></li>
+                <li><a href="{% url 'therapy:therapy-followup' pk=request.user.id %}">Seguimiento</a></li>
+
+                <li><a href="{% url 'therapy:log-out' %}">Salir </a></li>
+                <span style="margin-left: 20px;" class="deep-orange-text">Bienvenido '{{ request.user.username }}'</span>
+            </ul>
+            <ul id="nav-mobile" class="side-nav">
+                <li><a href="{% url 'therapy:therapy-request' %}">Sesion-Online</a></li>
+                <li><a href="{% url 'therapy:therapy-resources' %}">Recursos</a></li>
+                <li><a href="{% url 'therapy:therapy-forums' %}">Comunidad</a></li>
+                <li><a href="{% url 'therapy:therapy-followup' pk=request.user.id %}">Seguimiento</a></li>
+
+                <li><a href="{% url 'therapy:log-out' %}">Salir </a></li>
+            </ul>
+            <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
+        {% endif %}
+    </div>
+</nav>
+<div class="container">
+    <div class="section">
+        {% block main-content %}{% endblock %}
+    </div>
+    <br><br>
+</div>
+
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<!-- Compiled and minified JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $('select').material_select();
+
+         $('.datepicker').pickadate({
+            selectMonths: true, // Creates a dropdown to control month
+            selectYears: 15, // Creates a dropdown of 15 years to control year,
+            today: 'Today',
+            clear: 'Clear',
+            close: 'Ok',
+            closeOnSelect: false // Close upon selecting a date,
+          });
+    });
+</script>
+
+</body>
+</html>

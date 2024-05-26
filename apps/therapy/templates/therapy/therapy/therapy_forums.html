@@ -1,0 +1,55 @@
+{% extends 'therapy/fragments/base.html' %}
+
+{% block main-content %}
+<div class="row">
+    <div class="col s12">
+        <a class="waves-effect waves-light btn right red darken-1" href="{% url 'therapy:thread-create' %}">
+            <i class="material-icons left">add</i>Nuevo hilo
+        </a>
+    </div>
+</div>
+<div class="row">
+    <div class="col s12">
+        {% if not threads %}
+            <div class="card-panel red">
+                <span class="white-text">No hay hilos de discusión actualmente</span>
+            </div>
+        {% else %}
+            <table class="striped centered">
+                <thead>
+                    <tr>
+                        <th width="5%">ID</th>
+                        <th width="20%">Nombre</th>
+                        <th width="30%">Titulo</th>
+                        <th width="30%">Fecha de Publicación</th>
+                        <th width="20%">Opciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for thread in threads %}
+                    <tr>
+                        <td># {{ thread.thread_id }} </td>
+                        <td width="20%">{{ thread.name | truncatechars:150 }}</td>
+                        <td width="30%">{{ thread.title}}</td>
+                        <td width="30%">{{ thread.date_created}}</td>
+                        <td width="20%">
+                            {% if request.user.id == thread.user_id %}
+                                <a class="btn-floating btn-small waves-effect waves-light red" href="{{ thread.get_edit_url }}">
+                                    <i class="material-icons">edit</i>
+                                </a>
+                                <a class="btn-floating btn-small waves-effect waves-light blue" href="{{ thread.get_delete_url }}">
+                                    <i class="material-icons">delete</i>
+                                </a>
+                            {% endif %}
+                            <a class="btn-floating btn-small waves-effect waves-light green" href="{{ thread.get_detail_url }}">
+                                <i class="material-icons">visibility</i>
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

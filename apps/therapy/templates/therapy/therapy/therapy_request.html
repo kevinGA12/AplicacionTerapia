@@ -1,0 +1,66 @@
+{% extends 'therapy/fragments/base.html' %}
+{% block main-content %}
+    <div class="row">
+        <div class="col s12">
+            <a class="waves-effect waves-light btn right red darken-1" href="{% url 'therapy:therapy-create' %}"><i
+                    class="material-icons left">add</i>Solicitud</a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col s12">
+            {% if not therapies %}
+                <div class="card-panel red">
+                    <span class="white-text">No hay solicitudes actualmente</span>
+                </div>
+            {% else %}
+                <table class="striped centered">
+                    <thead>
+                    <tr>
+                        <th width="20%">Nombre</th>
+                        <th width="15%">Descripcion</th>
+                        <th width="20%">Fecha de cita</th>
+                        <th width="15%">Doctor</th>
+                        <th width="15%">Solicitud</th>
+                        <th width="10%">Opciones</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for session in therapies %}
+                        <tr>
+                            <td width="20%">{{ session.name }}</td>
+                            <td>{{ session.description | truncatechars:120 }}</td>
+                            <td>{{ session.therapy_date|date:"d M Y" }} {{ session.therapy_time|date:"H:i" }}</td>
+                            <td>{{ session.doctor }}</td>
+                            {% if session.found %}
+                                <td class="green-text">Aceptada</td>
+                            {% else %}
+                                <td class="red-text">En proceso</td>
+                            {% endif %}
+                            {% if request.user.id == session.user_id %}
+                                <td width="20%">
+                                    <a class="btn-floating btn-small waves-effect waves-light blue"
+                                    href="#" data-url="{{ session.get_delete_url }}"><i class="material-icons">delete</i></a>
+                                </td>
+                            {% endif %}
+                        </tr>
+                    {% endfor %}
+                    <script>
+                        const deleteButtons = document.querySelectorAll('.btn-floating');
+                    
+                        deleteButtons.forEach((btn) => {
+                            btn.addEventListener('click', function (event) {
+                                event.preventDefault();
+                                const url = this.getAttribute('data-url');
+                    
+                                if (confirm('Vas a borrar tu cita con el doctor, continuar de todos modos?')) {
+                                    window.location.href = url;
+                                }
+                            });
+                        });
+                    </script>
+                    </tbody>
+                </table>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
